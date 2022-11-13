@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Recipe } from 'src/app/models/recipe';
 import { RecipeService } from '../../recipe.service';
 
@@ -9,18 +10,12 @@ import { RecipeService } from '../../recipe.service';
 })
 export class RecipeItemComponent implements OnInit {
 
-  @Input() recipe: Recipe;
+  recipe: Recipe;
+  @Input() recipeId: number;
   
-  constructor(private recipeService: RecipeService) { }
+  constructor(private recipeService: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
-    //this.subscribeToRecipe();
+    this.recipe = this.recipeService.getRecipeById(this.recipeId);
   }
-
-  subscribeToRecipe(){
-    this.recipeService.recipeSelectedEvent.subscribe(recipe => {
-      this.recipe = recipe;
-    })
-  }
-
 }

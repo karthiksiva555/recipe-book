@@ -12,14 +12,14 @@ export class RecipeService {
   recipeSelectedEvent = new EventEmitter<Recipe>();
 
   private recipes: Recipe[] = [
-    new Recipe('Tandoori Chicken',
+    new Recipe(1, 'Tandoori Chicken',
       'A healthy Indian chicken recipe',
       'https://hips.hearstapps.com/hmg-prod/images/chicken-tandori-1526595014.jpg',
       [
         new Ingredient('Chicken Leg', 4),
         new Ingredient('Tandoori Masala', 2)
       ]),
-    new Recipe('Carrot Salad',
+    new Recipe(2, 'Carrot Salad',
       'A healthy carrot salad with lime',
       'https://www.eatwell101.com/wp-content/uploads/2020/11/Shredded-Carrot-Salad-recipe.jpg',
       [
@@ -34,6 +34,10 @@ export class RecipeService {
 
   recipeSelected(recipe: Recipe){
     this.recipeSelectedEvent.emit(recipe);    
+  }
+
+  getRecipeById(recipeId: number){
+    return this.recipes.slice().find(({id}) => recipeId === id);
   }
 
 }

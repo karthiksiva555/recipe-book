@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../../models/recipe';
 import { RecipeService } from '../recipe.service';
 
@@ -11,14 +12,15 @@ export class RecipeListComponent implements OnInit {
 
   recipes: Recipe[];  
   
-  constructor(private recipeService: RecipeService) { }
+  constructor(private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.recipes = this.recipeService.getRecipes();
   }
 
-  onRecipeSelected(selectedRecipe: Recipe){
-    this.recipeService.recipeSelected(selectedRecipe);
+  // Instead of adding click listener for button, we can also add routerLink="./new" on it.
+  onNewRecipe(){
+    this.router.navigate(['new'], {relativeTo: this.route});
   }
 
 }
