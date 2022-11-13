@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../models/recipe';
+import { RecipeService } from './recipe.service';
 
 @Component({
   selector: 'app-recipes',
@@ -8,15 +9,8 @@ import { Recipe } from '../models/recipe';
 })
 export class RecipesComponent implements OnInit {
 
-  selectedRecipe: Recipe;
-
   constructor() { }
 
   ngOnInit(): void {
   }
-
-  onRecipeSelected(recipe: Recipe){
-    this.selectedRecipe = recipe;
-  }
-
 }

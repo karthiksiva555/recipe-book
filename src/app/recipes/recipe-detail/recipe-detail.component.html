@@ -1,3 +1,4 @@
+<div *ngIf="recipe; else infoText">
 <div class="row">
     <div class="col-xs-12">
         <img [src]="recipe.imagePath" [alt]="recipe.name" class="img-responsive">
@@ -30,3 +31,7 @@
         Ingredients
     </div>
 </div>
+</div>
+<ng-template #infoText>
+    <h3>Please click on a recipe to see details!</h3>
+</ng-template>
