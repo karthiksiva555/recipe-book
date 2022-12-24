@@ -29,7 +29,12 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   loadRecipe(){
-    this.recipe = this.recipeService.getRecipeById(this.recipeId);
+    this.recipe = this.recipeService.getRecipe(this.recipeId);
+  }
+
+  onDeleteRecipe(){
+    this.recipeService.deleteRecipe(this.recipeId);
+    this.recipe = null; // this will set the ng-template to else; alternatively, we can navigate to /recipes using router
   }
 
 }

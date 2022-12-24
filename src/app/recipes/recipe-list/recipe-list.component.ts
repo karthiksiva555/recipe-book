@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Recipe } from '../../models/recipe';
 import { RecipeService } from '../recipe.service';
 
@@ -8,14 +9,18 @@ import { RecipeService } from '../recipe.service';
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css']
 })
-export class RecipeListComponent implements OnInit {
+export class RecipeListComponent implements OnInit, OnDestroy {
 
+  recipesChangedSubscription: Subscription;
   recipes: Recipe[];  
   
   constructor(private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.recipes = this.recipeService.getRecipes();
+    this.recipesChangedSubscription =this.recipeService.recipesChanged.subscribe(recipes => {
+      this.recipes = recipes;
+    });
   }
 
   // Instead of adding click listener for button, we can also add routerLink="./new" on it.
@@ -23,4 +28,7 @@ export class RecipeListComponent implements OnInit {
     this.router.navigate(['new'], {relativeTo: this.route});
   }
 
+  ngOnDestroy(): void {
+    this.recipesChangedSubscription.unsubscribe();
+  }
 }

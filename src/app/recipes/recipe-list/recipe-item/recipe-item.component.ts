@@ -16,6 +16,6 @@ export class RecipeItemComponent implements OnInit {
   constructor(private recipeService: RecipeService, private router: Router) { }
 
   ngOnInit(): void {
-    this.recipe = this.recipeService.getRecipeById(this.recipeId);
+    this.recipe = this.recipeService.getRecipe(this.recipeId);
   }
 }
