@@ -8,15 +8,9 @@ import { Component, OnInit, Output, ViewEncapsulation, EventEmitter } from '@ang
 })
 export class HeaderComponent implements OnInit {
 
-  @Output() headerClicked = new EventEmitter<string>();
-  
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  onHeaderClicked(optionSelected: string){
-    this.headerClicked.emit(optionSelected);
   }
 
 }

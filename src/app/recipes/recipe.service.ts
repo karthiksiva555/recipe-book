@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredient } from '../models/ingredient';
 import { Recipe } from '../models/recipe';
 
@@ -8,8 +8,6 @@ import { Recipe } from '../models/recipe';
 export class RecipeService {
 
   constructor() { }
-
-  recipeSelectedEvent = new EventEmitter<Recipe>();
 
   private recipes: Recipe[] = [
     new Recipe(1, 'Tandoori Chicken',
@@ -30,10 +28,6 @@ export class RecipeService {
   
   getRecipes(){
     return this.recipes.slice(); // to get a copy of the array instead of reference
-  }
-
-  recipeSelected(recipe: Recipe){
-    this.recipeSelectedEvent.emit(recipe);    
   }
 
   getRecipeById(recipeId: number){
