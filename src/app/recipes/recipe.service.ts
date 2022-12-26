@@ -33,6 +33,11 @@ export class RecipeService {
     return this.recipes.slice(); // to get a copy of the array instead of reference
   }
 
+  setRecipes(recipes: Recipe[]){
+    this.recipes = recipes;
+    this.recipesChanged.next(recipes);
+  }
+
   getRecipe(index: number){
     return this.recipes[index];
   }
