@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   signUp(email: string, password: string){
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=<get a token from firebase>', 
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=', 
     {
       email: email,
       password: password,
@@ -30,7 +30,7 @@ export class AuthService {
   }
   
   signIn(email: string, password: string){
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=<get a token from firebase>', 
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=', 
     {
       email: email,
       password: password,
@@ -42,6 +42,10 @@ export class AuthService {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
       })
     );
+  }
+
+  logout(){
+    this.user.next(null);
   }
 
   // moved to a separate method for re-usability; currently used in signup and signin
