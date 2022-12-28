@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   signUp(email: string, password: string){
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDwRsvfV8Jmoday_-BfCzR_GWGTu8Ftw4E', 
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=<get a new firebase api key>', 
     {
       email: email,
       password: password,
@@ -22,7 +22,7 @@ export class AuthService {
   }
   
   signIn(email: string, password: string){
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDwRsvfV8Jmoday_-BfCzR_GWGTu8Ftw4E', 
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=<get a new firebase api key>', 
     {
       email: email,
       password: password,
