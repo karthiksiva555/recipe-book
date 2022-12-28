@@ -1,6 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { User } from '../models/user';
 import { AuthResponseData } from './auth-response-data';
 
 @Injectable({
@@ -8,30 +10,41 @@ import { AuthResponseData } from './auth-response-data';
 })
 export class AuthService {
 
+  user = new BehaviorSubject<User>(null);
+
   constructor(private http: HttpClient) { }
 
   signUp(email: string, password: string){
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=<get a new firebase api key>', 
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=<get a token from firebase>', 
     {
       email: email,
       password: password,
       returnSecureToken: true
-    }).pipe(
-      catchError(this.handleError)
+    })
+    .pipe(
+      catchError(this.handleError),
+      tap(responseData => {
+        this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+      })
     );
   }
   
   signIn(email: string, password: string){
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=<get a new firebase api key>', 
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=<get a token from firebase>', 
     {
       email: email,
       password: password,
       returnSecureToken: true
-    }).pipe(
-      catchError(this.handleError)
+    })
+    .pipe(
+      catchError(this.handleError),
+      tap(responseData => {
+        this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+      })
     );
   }
 
+  // moved to a separate method for re-usability; currently used in signup and signin
   private handleError(errorResponse: HttpErrorResponse){
     let error = 'An unknown error occurred!';
     if(errorResponse.error && errorResponse.error.error && errorResponse.error.error.message){
@@ -46,5 +59,12 @@ export class AuthService {
       }
     }
     return throwError(error);
+  }
+
+  // Creates a new user from the response of the API call and notifies subscribers of the new user
+  private handleAuthentication(email: string, id: string, token: string, expiresIn: number){
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, id, token, expirationDate);
+    this.user.next(user);
   }
 }
