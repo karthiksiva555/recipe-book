@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthResponseData } from '../auth-response-data';
 import { AuthService } from '../auth.service';
@@ -18,7 +19,7 @@ export class AuthComponent implements OnInit {
 
   @ViewChild('authForm') authForm: NgForm;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -38,8 +39,10 @@ export class AuthComponent implements OnInit {
     }
     this.authObservable.subscribe(
       response=>{
-        console.log(response);
         this.isLoading = false;
+        if(this.isLoginMode){
+          this.router.navigate(['/recipes']);
+        }
       },
       errorMessage => {
         this.error = errorMessage;
