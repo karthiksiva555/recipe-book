@@ -3,10 +3,14 @@
         <div *ngIf="this.isLoading">
             <app-loading-spinner></app-loading-spinner>
         </div>
-        <app-alert [message]="this.error" *ngIf="this.error" (close)="onClose()"></app-alert>
-        <!-- <div *ngIf="this.error" class="alert alert-danger">
+        <!-- show alert when there is an error; not in AlertComponent but in a div -->
+        <div *ngIf="this.error" class="alert alert-danger">
             {{this.error}}
-        </div> -->
+        </div>
+        <!-- using ngIf = > show AlertComponent when there is an error -->
+        <!-- <app-alert [message]="this.error" *ngIf="this.error" (close)="onClose()"></app-alert> -->
+        <!-- Show AlertComponent programmatically when there is an error -->
+        <ng-template placeholder></ng-template>
         <form #authForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!this.isLoading">
             <div class="form-group">
                 <label for="email">Email</label>        
