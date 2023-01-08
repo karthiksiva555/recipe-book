@@ -9,6 +9,7 @@ import { AuthComponent } from './auth/auth/auth.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ShoppingListModule } from './shopping-list/shopping-list.module';
     FormsModule,
     HttpClientModule,
     RecipesModule,
-    ShoppingListModule
+    ShoppingListModule,
+    SharedModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}
