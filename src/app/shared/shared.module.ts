@@ -25,7 +25,7 @@ import { PlaceholderDirective } from './placeholder.directive';
     PlaceholderDirective,
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
+    FormsModule
   ]
 })
 export class SharedModule { }
