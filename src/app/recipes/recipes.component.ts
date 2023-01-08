@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoggingService } from '../logging.service';
 
 @Component({
   selector: 'app-recipes',
@@ -7,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecipesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private loggingService: LoggingService) { }
 
   ngOnInit(): void {
+    this.loggingService.printLog('In ngOnInit of RecipeComponent'); // logging service instance is different from that of AppComponent's
   }
 }
