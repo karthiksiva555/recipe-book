@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Ingredient } from '../models/ingredient';
-import { ShoppingListService } from './shopping-list.service';
+import { StartEdit } from './store/shopping-list.actions';
+import * as fromShoppingList from './store/shopping-list.reducer'; // this is a convention suggested by NgRx
 
 @Component({
   selector: 'app-shopping-list',
@@ -15,8 +16,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   // ingredients: Ingredient[] = [];
   ingredients: Observable<{ ingredients: Ingredient[]}>;
 
-  // {shoppingList: {ingredients: []}} => type {key : value} where value is list of ingredients
-  constructor(private shoppingListService: ShoppingListService, public store: Store<{shoppingList: {ingredients: []}}>) { }
+  // {shoppingList: {ingredients: []}} => type {key : value} where value is list of ingredients; later changed to interface type
+  constructor(public store: Store<fromShoppingList.AppState>) { }
   
   ngOnDestroy(): void {
     // this.iaSubscription.unsubscribe();
@@ -32,6 +33,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onEditItem(index: number){
-    this.shoppingListService.startEditing(index);
+    // this.shoppingListService.startEditing(index);
+    this.store.dispatch(new StartEdit(index));
   }
 }
