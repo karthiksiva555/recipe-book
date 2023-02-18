@@ -3,9 +3,8 @@ import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient';
-import { ShoppingListService } from '../shopping-list.service';
 import { AddIngredient, DeleteIngredient, StopEdit, UpdateIngredient } from '../store/shopping-list.actions';
-import * as fromShoppingList from '../store/shopping-list.reducer'; // this is a convention suggested by NgRx
+import * as fromApp from '../../store/app.reducer'; // * as fromApp is a convention suggested by NgRx
 
 @Component({
   selector: 'app-shopping-list-edit',
@@ -20,7 +19,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   editIndex: number;
 
-  constructor(private store: Store<fromShoppingList.AppState> // inject store to handle add and update via store
+  constructor(private store: Store<fromApp.AppState> // inject store to handle add and update via store
     ) { }
 
   ngOnInit(): void {

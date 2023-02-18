@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Ingredient } from '../models/ingredient';
 import { StartEdit } from './store/shopping-list.actions';
-import * as fromShoppingList from './store/shopping-list.reducer'; // this is a convention suggested by NgRx
+import * as fromApp from '../store/app.reducer'; // this is a convention suggested by NgRx
 
 @Component({
   selector: 'app-shopping-list',
@@ -17,7 +17,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ingredients: Observable<{ ingredients: Ingredient[]}>;
 
   // {shoppingList: {ingredients: []}} => type {key : value} where value is list of ingredients; later changed to interface type
-  constructor(public store: Store<fromShoppingList.AppState>) { }
+  constructor(public store: Store<fromApp.AppState>) { }
   
   ngOnDestroy(): void {
     // this.iaSubscription.unsubscribe();

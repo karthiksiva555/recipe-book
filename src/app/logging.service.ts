@@ -15,8 +15,6 @@ export class LoggingService {
   constructor() { }
 
   printLog(message: string){
-    console.log('current message: '+ message);
-    console.log('Previous message: '+ this.logMessage);
     this.logMessage = message;
   }
 }
