@@ -2,12 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { AuthResponseData } from './auth-response-data';
-import { Login, Logout } from './store/auth.actions';
+import { LoginSuccess, Logout } from './store/auth.actions';
 import * as fromApp from '../store/app.reducer';
 
 @Injectable({
@@ -34,7 +34,7 @@ export class AuthService {
     if(loadedUser.token){
       // autoLogout must be set on every initial load; expiry => current user's expirationdate minus current time in milli sec
       //this.user.next(loadedUser);
-      this.store.dispatch(new Login({
+      this.store.dispatch(new LoginSuccess({
         email: loadedUser.email, id: loadedUser.id, token: loadedUser.token, expirationDate: new Date(userData._tokenExpirationDate)
       }));
       const tokenDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
@@ -81,7 +81,7 @@ export class AuthService {
   logout(){
     // this.user.next(null);
     this.store.dispatch(new Logout());
-    this.router.navigate(['/auth']);
+    // this.router.navigate(['/auth']); // should be delegated to effect
     localStorage.removeItem('userData');
     if(this.logoutTimer){
       clearTimeout(this.logoutTimer);
@@ -111,7 +111,7 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, id, token, expirationDate);
     // this.user.next(user);
-    this.store.dispatch(new Login({
+    this.store.dispatch(new LoginSuccess({
       email: email, id: id, token: token, expirationDate: expirationDate
     }));
     this.autoLogout(expiresIn*1000);
