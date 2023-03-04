@@ -35,7 +35,7 @@ export class AuthService {
       // autoLogout must be set on every initial load; expiry => current user's expirationdate minus current time in milli sec
       //this.user.next(loadedUser);
       this.store.dispatch(new LoginSuccess({
-        email: loadedUser.email, id: loadedUser.id, token: loadedUser.token, expirationDate: new Date(userData._tokenExpirationDate)
+        email: loadedUser.email, id: loadedUser.id, token: loadedUser.token, expirationDate: new Date(userData._tokenExpirationDate), redirect:false
       }));
       const tokenDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(tokenDuration);
@@ -112,7 +112,7 @@ export class AuthService {
     const user = new User(email, id, token, expirationDate);
     // this.user.next(user);
     this.store.dispatch(new LoginSuccess({
-      email: email, id: id, token: token, expirationDate: expirationDate
+      email: email, id: id, token: token, expirationDate: expirationDate, redirect: true
     }));
     this.autoLogout(expiresIn*1000);
     localStorage.setItem('userData', JSON.stringify(user));

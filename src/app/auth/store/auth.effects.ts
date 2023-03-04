@@ -23,7 +23,8 @@ export class AuthEffects {
             email: email,
             id: id,
             token: token,
-            expirationDate: expirationDate
+            expirationDate: expirationDate,
+            redirect: true
         })
     };
 
@@ -68,9 +69,11 @@ export class AuthEffects {
     //When authentication is successful, redirect the user to a protected page
     authRedirect$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(AuthActions.LOGIN_SUCCESS, AuthActions.LOGOUT),
-            tap(() => {
-                this.router.navigate(['/']);
+            ofType(AuthActions.LOGIN_SUCCESS),
+            tap((authSuccessAction: AuthActions.LoginSuccess) => {
+                if(authSuccessAction.payload.redirect){ // skip redirecting on autologin
+                    this.router.navigate(['/']);
+                }
             })
         )
     }, {dispatch: false});
@@ -130,7 +133,11 @@ export class AuthEffects {
                   const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
                   if(loadedUser.token){
                     return new AuthActions.LoginSuccess({
-                      email: loadedUser.email, id: loadedUser.id, token: loadedUser.token, expirationDate: new Date(userData._tokenExpirationDate)
+                      email: loadedUser.email, 
+                      id: loadedUser.id, 
+                      token: loadedUser.token, 
+                      expirationDate: new Date(userData._tokenExpirationDate),
+                      redirect: false
                     });
                   }
                   return { type: 'Dummy'}; 
