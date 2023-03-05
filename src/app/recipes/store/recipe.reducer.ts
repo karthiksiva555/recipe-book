@@ -1,15 +1,11 @@
 import { Recipe } from "src/app/models/recipe";
 import * as RecipeActions from './recipe.actions';
 export interface State {
-    recipes: Recipe[],
-    selectedRecipe: Recipe,
-    selectedRecipeIndex: number
+    recipes: Recipe[]
 }
 
 const initialState: State = {
-    recipes: [],
-    selectedRecipe: null,
-    selectedRecipeIndex: -1
+    recipes: []    
 };
 
 export function recipeReducer(state: State = initialState, action: RecipeActions.RecipeActions){
@@ -20,21 +16,21 @@ export function recipeReducer(state: State = initialState, action: RecipeActions
                 recipes: [...state.recipes, action.payload] 
             };
         case RecipeActions.UPDATE_RECIPE:
-            const currentRecipe = state.recipes[state.selectedRecipeIndex];
-            const updatedRecipe = {...currentRecipe, ...action.payload};
-            //const updatedRecipe = {...state.selectedRecipe, ...action.payload};
+            const updatedRecipe = {...state.recipes[action.payload.index], ...action.payload.updatedRecipe};
             const updatedRecipes = [...state.recipes];
-            updatedRecipe[state.selectedRecipeIndex] = updatedRecipe;
+            updatedRecipes[action.payload.index] = updatedRecipe;
             return {...state,
                 recipes: updatedRecipes
+            };
+        case RecipeActions.DELETE_RECIPE:
+            return {...state,
+                    recipes: state.recipes.filter((recipe, index)=> {
+                        return index !== action.payload
+                    })
             };
         case RecipeActions.SET_RECIPES:
             return {...state,
                 recipes: [...action.payload]
-            };
-        case RecipeActions.DELETE_RECIPE:
-            return {...state,
-                recipes: [...state.recipes.splice(action.payload, 1)]
             };
         case RecipeActions.FETCH_RECIPES:
             return state;
