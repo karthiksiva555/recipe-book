@@ -7,6 +7,7 @@ import { AppState } from 'src/app/store/app.reducer';
 import { RecipeService } from '../recipe.service';
 import { DeleteRecipe } from '../store/recipe.actions';
 import { map, switchMap } from 'rxjs/operators';
+import * as ShoppingListActions from '../../shopping-list/store/shopping-list.actions';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -48,7 +49,8 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   onAddToCart(){
-    this.shoppingListService.addIngredients(this.recipe.ingredients.slice());
+    // this.shoppingListService.addIngredients(this.recipe.ingredients.slice());
+    this.store.dispatch(new ShoppingListActions.AddIngredients(this.recipe.ingredients));
   }
 
   // this is no more needed as recipe is now loaded in ngOnInit 
